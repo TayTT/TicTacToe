@@ -1,16 +1,26 @@
-# This is a sample Python script.
+import play
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+board = [None, None, None,
+         None, None, None,
+         None, None, None]
 
+play.draw(board)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+player = 'X'
+for i in range(10):
+    print("Move ", i+1)
+    board = play.make_move(board, player, play.choose_random(board))
+    # print("Empty spots: ", play.get_empty_spots(board))
+    # if player == "X":
+    #     player = "0"
+    # elif player == "0":
+    #     player = "X"
+    player = '0' if player == 'X' else 'X'
+    play.draw(board)
+    [winning_state, who_won] = play.is_won(board)
+    if winning_state:
+        print("The game is won by ", who_won)
+        break
+    elif play.is_tie(board):
+        print("The game is a tie.")
+        break
