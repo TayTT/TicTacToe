@@ -87,15 +87,14 @@ def get_winning_score(board):
         return 0
 
 
-# TODO first move
-
 def choose_best_move(board):
     best_move = None
     tmp_board = copy.deepcopy(board)
-    for move in get_possible_moves(board):
-        board[move] = 'X'
-        if minimax(board) == 1:
+    for move in get_possible_moves(tmp_board):
+        tmp_board[move] = 'X'
+        if minimax(tmp_board) == 1:
             best_move = move
+    return best_move
 
 
 def minimax(board):
@@ -111,5 +110,3 @@ def minimax(board):
                 board[move] = 'X'
                 board[choose_random(board)] = 'O'
                 minimax(board)
-
-    
