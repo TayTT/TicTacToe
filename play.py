@@ -2,6 +2,9 @@ import random
 
 
 def draw(current_board):
+    for i in range(len(current_board)):
+        if current_board[i] is None:
+            current_board[i] = ' '
     print("| ", current_board[0], " | ", current_board[1], " | ", current_board[2], " |")
     print("-------------------")
     print("| ", current_board[3], " | ", current_board[4], " | ", current_board[5], " |")
@@ -10,31 +13,26 @@ def draw(current_board):
     print(" ")
 
 
-def get_empty_spots(board):
-    empty_spots = []
+def get_possible_moves(board):
+    possible_moves = []
     for i in range(len(board)):
         if board[i] is None:
-            empty_spots.append(i)
-    return empty_spots
+            possible_moves.append(i)
+    return possible_moves
 
 
 def is_tie(board):
-    empty_spots = get_empty_spots(board)
-    if len(empty_spots) == 0:
+    possible_moves = get_possible_moves(board)
+    if len(possible_moves) == 0:
         return True
     else:
         return False
 
 
-# def choose_random(board):
-#     empty_spots = get_empty_spots(board)
-#     return random.randint(0, len(empty_spots) - 1)
 def choose_random(board):
-    empty_spots = get_empty_spots(board)
-    if empty_spots:
-        return random.choice(empty_spots)
-    else:
-        return None
+    possible_moves = get_possible_moves(board)
+    if possible_moves:
+        return random.choice(possible_moves)
 
 
 def make_move(board, player_sign, chosen_spot):
@@ -68,3 +66,44 @@ def is_won(board):
 
     else:
         return [False, "no one"]
+
+#
+# def is_over(board):
+#     [state, who] = is_won(board)
+#     if state or is_tie(board):
+#         return True
+#     else:
+#         return False
+
+
+def get_winning_score(board):
+    [winning_state, who_won] = is_won(board)
+    if who_won == 'X':
+        return 1
+    elif who_won == 'O':
+        return -1
+    else:
+        return 0
+
+
+def minimax(board):
+    #  checking if the game is over
+    # [winning_state, who_won] = is_won(board)
+    # if winning_state:
+    #     print("The game was won by ", who_won)
+    #     draw(board)
+    #     return
+    # elif is_tie(board):
+    #     print("The game is a tie. ")
+    #     draw(board)
+    #     return
+    for move in get_possible_moves(board):
+        [winning_state, who_won] = is_won(board)
+        if winning_state:
+            return get_winning_score(board)
+        else:
+            board[move] = 'X' #TODO switching players, assuming O is rand
+
+            minimax(board)
+
+    

@@ -1,26 +1,17 @@
 import play
 
-board = [None, None, None,
-         None, None, None,
-         None, None, None]
-
-play.draw(board)
+board = [None] * 9
 
 player = 'X'
 for i in range(10):
-    print("Move ", i+1)
     board = play.make_move(board, player, play.choose_random(board))
-    # print("Empty spots: ", play.get_empty_spots(board))
-    # if player == "X":
-    #     player = "0"
-    # elif player == "0":
-    #     player = "X"
-    player = '0' if player == 'X' else 'X'
-    play.draw(board)
+    player = 'O' if player == 'X' else 'X'
     [winning_state, who_won] = play.is_won(board)
     if winning_state:
-        print("The game is won by ", who_won)
+        print("The game was won by ", who_won, " in ", i+1, "moves.")
+        play.draw(board)
         break
     elif play.is_tie(board):
-        print("The game is a tie.")
+        print("The game is a tie. ", i+1, " moves were made")
+        play.draw(board)
         break
