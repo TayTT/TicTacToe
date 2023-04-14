@@ -102,8 +102,8 @@ def minimax(board):
         if winning_state:
             return get_winning_score(board)
         else:
-            board[move] = 'X' #TODO switching players, assuming O is rand
-
+            board[move] = 'X'
+            board[choose_random(board)] = 'O'
             minimax(board)
 
     
