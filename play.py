@@ -1,3 +1,4 @@
+import copy
 import random
 
 
@@ -86,24 +87,29 @@ def get_winning_score(board):
         return 0
 
 
+# TODO first move
+
+def choose_best_move(board):
+    best_move = None
+    tmp_board = copy.deepcopy(board)
+    for move in get_possible_moves(board):
+        board[move] = 'X'
+        if minimax(board) == 1:
+            best_move = move
+
+
 def minimax(board):
-    #  checking if the game is over
-    # [winning_state, who_won] = is_won(board)
-    # if winning_state:
-    #     print("The game was won by ", who_won)
-    #     draw(board)
-    #     return
-    # elif is_tie(board):
-    #     print("The game is a tie. ")
-    #     draw(board)
-    #     return
     for move in get_possible_moves(board):
         [winning_state, who_won] = is_won(board)
         if winning_state:
             return get_winning_score(board)
         else:
-            board[move] = 'X'
             board[choose_random(board)] = 'O'
-            minimax(board)
+            if winning_state:
+                return get_winning_score(board)
+            else:
+                board[move] = 'X'
+                board[choose_random(board)] = 'O'
+                minimax(board)
 
     
