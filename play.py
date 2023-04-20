@@ -36,23 +36,23 @@ def make_move(board, player_sign, chosen_spot):
 
 def choose_best_move(board):
     best_score = float('-inf')
-    best_move = None
+    best_moves = []
     for move in get_possible_moves(board):
         tmp_board = copy.deepcopy(board)
         tmp_board[move] = 'X'
         score = minimax(tmp_board, False)
         if score > best_score:
             best_score = score
-            best_move = move
-    return best_move
+            best_moves = [move]
+        elif score == best_score:
+            best_moves.append(move)
+    return random.choice(best_moves)
+
 
 
 def minimax(board, is_maximizing_player):
-    if is_won(board)[0]:
+    if is_won(board)[0] or is_tie(board):
         return get_winning_score(board)
-
-    if is_tie(board):
-        return 0
 
     if is_maximizing_player:
         best_score = float('-inf')
@@ -71,16 +71,7 @@ def minimax(board, is_maximizing_player):
             score = minimax(tmp_board, True)
             best_score = min(score, best_score)
         return best_score
-# def choose_best_move(board):
-#     best_move = None
-#     tmp_board = copy.deepcopy(board)
-#     for move in get_possible_moves(tmp_board):
-#         tmp_board[move] = 'X'
-#         if minimax(tmp_board) == 1:
-#             best_move = move
-#     return best_move
-#
-#
+
 # def minimax(board):
 #     for move in get_possible_moves(board):
 #         winning_state = is_won(board)[0]
@@ -94,32 +85,6 @@ def minimax(board, is_maximizing_player):
 #                 board[move] = 'X'
 #                 board[choose_random(board)] = 'O'
 #                 return get_winning_score(board)
-
-
-# def minimax(board, is_maximizing_player):
-#     if is_won(board)[0]:
-#         return get_winning_score(board)
-#
-#     if is_tie(board):
-#         return 0
-#
-#     if is_maximizing_player:
-#         best_score = float('-inf')
-#         for move in get_possible_moves(board):
-#             tmp_board = copy.deepcopy(board)
-#             tmp_board[move] = 'X'
-#             score = minimax(tmp_board, False)
-#             best_score = max(score, best_score)
-#         return best_score
-#
-#     else:
-#         best_score = float('inf')
-#         for move in get_possible_moves(board):
-#             tmp_board = copy.deepcopy(board)
-#             tmp_board[move] = 'O'
-#             score = minimax(tmp_board, True)
-#             best_score = min(score, best_score)
-#         return best_score
 
 
 def is_tie(board):
@@ -165,4 +130,3 @@ def get_winning_score(board):
         return -1
     else:
         return 0
-
